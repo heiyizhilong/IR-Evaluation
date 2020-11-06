@@ -7,7 +7,7 @@ Normalized Discounted Cumulative Gain (NDCG)；
 ## 实验过程
 ### 得到qrels_dict和test_dict
 qrels_dict和test_dict分别从qrels.txt中和result.txt中得到
-```javascript
+```python
 #get qrels_dict
       for line in f:
           ele = line.strip().split(' ')
@@ -16,7 +16,7 @@ qrels_dict和test_dict分别从qrels.txt中和result.txt中得到
           if int(ele[3]) > 0:
               qrels_dict[ele[0]][ele[2]] = int(ele[3])
 ```
-```javascript
+```python
 #get test_dict
       for line in f:
           ele = line.strip().split(' ')
@@ -25,7 +25,7 @@ qrels_dict和test_dict分别从qrels.txt中和result.txt中得到
           test_dict[ele[0]].append(ele[1])
 ```
 简单来说，可以认为test_dict是测试的idset，qrels_dict是真实的idset,即
-```javascript
+```python
       test_result = test_dict[query]
       true_list = set(qrels_dict[query].keys())
 ```
@@ -35,7 +35,7 @@ MAP在Precision@K的基础上进行，主要步骤为：
 2.为K 1 , K 2 , … K R计算Precision@K；
 3.求这R个P@K的平均值AvgPrec，得到AP；
 4.MAP极为AP的均值；
-```javascript
+```python
 #MAP
       for doc_id in test_result[0: length_use]:
           i += 1
@@ -50,7 +50,7 @@ MAP在Precision@K的基础上进行，主要步骤为：
       MAP=np.mean(AP_result)
 ```
 可以得到MAP评价结果如下：（部分结果）
-```javascript
+```python
 query: 171 ,AP: 0.9498040597601832
 
 query: 172 ,AP: 0.3412969283276451
@@ -76,7 +76,7 @@ MRR相比其他两个较为简单，只需考虑第一个相关文档出现的�
 1.考虑第一个相关文档的名次位置
 2.计算排名分数为1/k
 3.MRR即为RR的均值
-```javascript
+```python
 #get MRR
       for doc_id in test_result[0: length_use]:
           i += 1
@@ -92,7 +92,7 @@ MRR相比其他两个较为简单，只需考虑第一个相关文档出现的�
       MRR=np.mean(RP_result)
 ```
 可以得到MRR评价结果如下：（部分结果）
-```javascript
+```python
 query: 171 ,RR: 0.5
 
 query: 172 ,RR: 1.0
@@ -123,7 +123,7 @@ NDCG基于两个假设：
 3.做一个discount的log运算，意为对测试结果的排名做一个惩罚（高rel，但rank不够靠前也很拉低评分），得到DCG
 4.标准化，得到IDCG,进而计算NDCG
 5.对每个query的NDCG求均值，得到最后的NDCG
-```javascript
+```python
 #getNDCG
         if length_use <= 0:
             print('query ', query, ' not found test list')
@@ -138,7 +138,7 @@ NDCG基于两个假设：
 
 ```
 可以得到NDCG评价结果如下：（部分结果）
-```javascript
+```python
 query 171 , NDCG: 0.9398543518229351
 
 query 172 , NDCG: 0.9522319284335552
